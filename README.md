@@ -1,22 +1,16 @@
-# Welcome to your Lovable project
+# NeuroTech - AI Solutions Project
 
-## Project info
+## Project Overview
 
-**URL**: https://lovable.dev/projects/ba4947f4-1c96-4275-967f-3c5f3858a36a
+This is a React-based web application for NeuroTech, specializing in AI solutions for businesses.
 
-## How can I edit this code?
+## How to edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/ba4947f4-1c96-4275-967f-3c5f3858a36a) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+If you want to work locally using your own IDE, you can clone this repo and push changes.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -60,14 +54,19 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
+## How to deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/ba4947f4-1c96-4275-967f-3c5f3858a36a) and click on Share -> Publish.
+You can deploy this project using various hosting platforms:
 
-## Can I connect a custom domain to my Lovable project?
+- Vercel
+- Netlify
+- GitHub Pages
+- Any static hosting service
 
-Yes, you can!
+Build the project first:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```sh
+npm run build
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Then deploy the `dist` folder to your hosting platform of choice.
