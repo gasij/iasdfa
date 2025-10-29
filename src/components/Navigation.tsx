@@ -32,12 +32,12 @@ export const Navigation = () => {
           {/* Logo */}
           <a href="#" className="flex items-center space-x-2 group">
             <div className="relative">
-              <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center glow-border group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                <span className="text-xl font-bold text-primary glow-text">AI</span>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-lg flex items-center justify-center glow-border group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                <span className="text-base sm:text-xl font-bold text-primary glow-text">AI</span>
               </div>
               <div className="absolute inset-0 bg-primary/10 rounded-lg blur-xl group-hover:scale-125 transition-transform"></div>
             </div>
-            <span className="text-xl font-bold group-hover:text-primary transition-colors">NeuroTech</span>
+            <span className="text-lg sm:text-xl font-bold group-hover:text-primary transition-colors hidden sm:inline">NeuroTech</span>
           </a>
 
           {/* Desktop Navigation */}
@@ -67,18 +67,18 @@ export const Navigation = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-4 animate-fade-in">
+          <div className="md:hidden mt-4 pb-4 space-y-3 animate-fade-in glass-card rounded-lg p-4">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                className="block text-muted-foreground hover:text-foreground transition-colors"
+                className="block py-2 px-3 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
               </a>
             ))}
-            <Button className="w-full glass-button text-primary-foreground">
+            <Button className="w-full glass-button text-primary-foreground mt-2">
               Связаться
             </Button>
           </div>

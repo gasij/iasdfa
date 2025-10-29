@@ -61,6 +61,29 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Better touch targets for mobile */
+  @media (max-width: 640px) {
+    button, a[href] {
+      min-height: 44px;
+    }
+    
+    /* Better spacing on small screens */
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+  
+  /* Tablet optimizations */
+  @media (min-width: 640px) and (max-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
   
   .glow-text {
@@ -178,6 +201,7 @@ All colors MUST be HSL.
       border-color: hsl(var(--primary) / 0.5);
     }
   }
+  
   
   .animate-float {
     animation: float 3s ease-in-out infinite;

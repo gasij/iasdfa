@@ -42,7 +42,7 @@ export const Contact = () => {
             {/* Background decoration */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-shimmer"></div>
             
-            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 relative z-10">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-2">
                   Имя
@@ -97,8 +97,8 @@ export const Contact = () => {
               </Button>
             </form>
 
-            <div className="mt-8 pt-8 border-t border-border">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
                 <a
                   href="mailto:info@neurotech.ai"
                   className="flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors"

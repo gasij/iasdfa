@@ -36,7 +36,7 @@ export const About = () => {
                   Мы превращаем сложные технологии в простые и рабочие инструменты для вашего бизнеса.
                 </p>
 
-                <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {features.map((feature, index) => (
                     <div
                       key={index}

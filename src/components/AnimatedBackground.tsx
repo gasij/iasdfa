@@ -43,22 +43,34 @@ export const AnimatedBackground = () => {
     }
 
     let animationId: number;
-    let frameCount = 0;
-    const framesPerMinute = 60 * 60; // 60 fps * 60 seconds = 3600 frames per minute
-    const clearInterval = framesPerMinute * 2; // 2 minutes
+    let startTime = Date.now();
+    const cycleDuration = 120000; // 2 minutes in milliseconds (1 min drawing + 1 min erasing)
+    const drawingPhase = 60000; // 1 minute for drawing
+    const erasingPhase = 60000; // 1 minute for erasing
 
     const animate = () => {
       if (!ctx) return;
-      frameCount++;
       
-      // Every 2 minutes (7200 frames at 60fps), clear old traces completely
-      if (frameCount % clearInterval === 0) {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+      const currentTime = Date.now();
+      const elapsed = (currentTime - startTime) % cycleDuration;
+      
+      // Determine which phase we're in
+      const isDrawingPhase = elapsed < drawingPhase;
+      const phaseProgress = isDrawingPhase 
+        ? elapsed / drawingPhase // 0 to 1 during drawing
+        : (elapsed - drawingPhase) / erasingPhase; // 0 to 1 during erasing
+      
+      if (isDrawingPhase) {
+        // Drawing phase: light fade to build up traces gradually
+        // Start with very light fade, gradually increase as pattern builds
+        const fadeIntensity = 0.015 + (phaseProgress * 0.025); // 0.015 to 0.04
+        ctx.fillStyle = `rgba(0, 0, 0, ${fadeIntensity})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        frameCount = 0;
       } else {
-        // Gradual fade effect - old traces fade slowly over 2 minutes
-        ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+        // Erasing phase: progressively stronger fade to completely erase traces
+        // Start strong to erase quickly, then maintain moderate fade
+        const eraseIntensity = 0.25 - (phaseProgress * 0.15); // 0.25 to 0.1
+        ctx.fillStyle = `rgba(0, 0, 0, ${eraseIntensity})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 

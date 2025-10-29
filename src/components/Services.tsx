@@ -53,13 +53,13 @@ export const Services = () => {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
               <Card
                 key={index}
-                className="group relative overflow-hidden glass-card p-6 animate-fade-in-up hover:scale-105"
+                className="group relative overflow-hidden glass-card p-5 sm:p-6 animate-fade-in-up hover:scale-105 transition-transform"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Background gradient */}
