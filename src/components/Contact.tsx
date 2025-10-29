@@ -28,16 +28,17 @@ export const Contact = () => {
       <div className="hidden md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8 sm:mb-12 animate-fade-in">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-              Свяжитесь <span className="text-primary glow-text">с нами</span>
-            </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground">
-              Готовы начать проект? Напишите нам!
-            </p>
-          </div>
+        <div className="text-center mb-8 sm:mb-12 animate-fade-in">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+            Свяжитесь <span className="text-primary glow-text">с нами</span>
+          </h2>
+          <p className="text-lg sm:text-xl text-muted-foreground">
+            Готовы начать проект? Напишите нам!
+          </p>
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-6xl mx-auto">
+          {/* Contact Form */}
           <div className="glass-card rounded-2xl p-6 sm:p-8 animate-fade-in-up relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-shimmer"></div>
@@ -115,6 +116,52 @@ export const Contact = () => {
                 </a>
               </div>
             </div>
+          </div>
+
+          {/* Sketchfab 3D Model - Hidden on mobile for performance */}
+          <div className="hidden lg:block rounded-2xl overflow-hidden relative animate-fade-in-up glass-card">
+            <div className="sketchfab-embed-wrapper" style={{ position: 'relative', height: '500px', overflow: 'hidden', borderRadius: '1rem' }}>
+              <iframe
+                title="AI CPU Concept with Circuit Board"
+                frameBorder="0"
+                allowFullScreen
+                allow="autoplay; fullscreen; xr-spatial-tracking"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: 'none'
+                }}
+                src="https://sketchfab.com/models/5945062ef52348438dc04a7bd231f6e1/embed"
+              />
+            </div>
+            <p className="p-2 text-xs text-muted-foreground text-center">
+              <a
+                href="https://sketchfab.com/3d-models/ai-cpu-concept-with-circuit-board-5945062ef52348438dc04a7bd231f6e1?utm_medium=embed&utm_campaign=share-popup&utm_content=5945062ef52348438dc04a7bd231f6e1"
+                target="_blank"
+                rel="nofollow"
+                className="font-bold text-primary hover:underline"
+              >
+                AI CPU Concept with Circuit Board
+              </a>
+              {' by '}
+              <a
+                href="https://sketchfab.com/bengroup?utm_medium=embed&utm_campaign=share-popup&utm_content=5945062ef52348438dc04a7bd231f6e1"
+                target="_blank"
+                rel="nofollow"
+                className="font-bold text-primary hover:underline"
+              >
+                BEN GROUP STUDIO
+              </a>
+              {' on '}
+              <a
+                href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=5945062ef52348438dc04a7bd231f6e1"
+                target="_blank"
+                rel="nofollow"
+                className="font-bold text-primary hover:underline"
+              >
+                Sketchfab
+              </a>
+            </p>
           </div>
         </div>
       </div>
