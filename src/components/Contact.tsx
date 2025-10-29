@@ -23,22 +23,22 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+    <section id="contact" className="py-12 sm:py-16 md:py-24 relative overflow-hidden">
+      {/* Background decoration - Hidden on mobile */}
+      <div className="hidden md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12 animate-fade-in">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <div className="text-center mb-8 sm:mb-12 animate-fade-in">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               Свяжитесь <span className="text-primary glow-text">с нами</span>
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-lg sm:text-xl text-muted-foreground">
               Готовы начать проект? Напишите нам!
             </p>
           </div>
 
-          <div className="glass-card rounded-2xl p-8 animate-fade-in-up relative overflow-hidden">
+          <div className="glass-card rounded-2xl p-6 sm:p-8 animate-fade-in-up relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-shimmer"></div>
             

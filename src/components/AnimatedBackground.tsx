@@ -13,6 +13,10 @@ export const AnimatedBackground = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    // Detect mobile device
+    const isMobile = window.innerWidth < 768;
+    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+
     // Create particles
     const particles: Array<{
       x: number;
@@ -23,8 +27,9 @@ export const AnimatedBackground = () => {
       hue: number;
     }> = [];
 
-    const particleCount = 80;
-    const connectionDistance = 150;
+    // Reduce particle count on mobile for better performance
+    const particleCount = isMobile ? 40 : isTablet ? 60 : 80;
+    const connectionDistance = isMobile ? 120 : 150;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -39,19 +44,21 @@ export const AnimatedBackground = () => {
 
     let animationId: number;
     let frameCount = 0;
+    const framesPerMinute = 60 * 60; // 60 fps * 60 seconds = 3600 frames per minute
+    const clearInterval = framesPerMinute * 2; // 2 minutes
 
     const animate = () => {
       if (!ctx) return;
       frameCount++;
       
-      // Every 180 frames (~3 seconds at 60fps), clear old traces more aggressively
-      if (frameCount % 180 === 0) {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+      // Every 2 minutes (7200 frames at 60fps), clear old traces completely
+      if (frameCount % clearInterval === 0) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         frameCount = 0;
       } else {
-        // Create stronger fade effect - erase old traces faster
-        ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+        // Gradual fade effect - old traces fade slowly over 2 minutes
+        ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
@@ -102,6 +109,11 @@ export const AnimatedBackground = () => {
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      // Reposition particles if needed when resizing
+      particles.forEach((particle) => {
+        if (particle.x > canvas.width) particle.x = canvas.width;
+        if (particle.y > canvas.height) particle.y = canvas.height;
+      });
     };
 
     window.addEventListener("resize", handleResize);
@@ -121,8 +133,8 @@ export const AnimatedBackground = () => {
         style={{ filter: "blur(0.5px)" }}
       />
       
-      {/* 3D Gradient Orb Effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      {/* 3D Gradient Orb Effects - Hidden on mobile for performance */}
+      <div className="hidden md:block fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[20%] left-[10%] w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDuration: "15s" }}>
           <div className="w-full h-full bg-gradient-to-br from-primary/20 to-transparent rounded-full animate-rotate" style={{ animationDuration: "20s" }}></div>
         </div>
@@ -137,8 +149,8 @@ export const AnimatedBackground = () => {
         </div>
       </div>
 
-      {/* Grid pattern overlay */}
-      <div className="fixed inset-0 pointer-events-none z-0 opacity-10">
+      {/* Grid pattern overlay - Hidden on mobile */}
+      <div className="hidden md:block fixed inset-0 pointer-events-none z-0 opacity-10">
         <div
           className="w-full h-full"
           style={{
@@ -152,8 +164,8 @@ export const AnimatedBackground = () => {
         />
       </div>
 
-      {/* Scanning line effect */}
-      <div className="fixed inset-0 pointer-events-none z-0 opacity-20">
+      {/* Scanning line effect - Hidden on mobile */}
+      <div className="hidden md:block fixed inset-0 pointer-events-none z-0 opacity-20">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/20 to-transparent animate-gradient" style={{ height: "200%", animation: "gradient-shift 4s linear infinite" }}></div>
       </div>
     </>

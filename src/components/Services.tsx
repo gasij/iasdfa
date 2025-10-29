@@ -42,18 +42,18 @@ export const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-24 relative">
+    <section id="services" className="py-12 sm:py-16 md:py-24 relative">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16 animate-fade-in">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Наши <span className="text-primary glow-text">услуги</span>
           </h2>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-lg sm:text-xl text-muted-foreground">
             Всё что нужно в мире AI и автоматизации
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -72,17 +72,17 @@ export const Services = () => {
                 
                 <div className="relative z-10">
                   {/* Icon */}
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
-                    <Icon className="w-7 h-7 text-primary" strokeWidth={1.5} />
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-primary" strokeWidth={1.5} />
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
                     {service.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {service.description}
                   </p>
                 </div>
