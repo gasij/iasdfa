@@ -38,8 +38,11 @@ export const Contact = () => {
             </p>
           </div>
 
-          <div className="bg-card border border-border rounded-2xl p-8 animate-fade-in-up">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="glass-card rounded-2xl p-8 animate-fade-in-up relative overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-shimmer"></div>
+            
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-2">
                   Имя
@@ -51,7 +54,7 @@ export const Contact = () => {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  className="bg-background border-border focus:border-primary"
+                  className="glass-input text-foreground"
                 />
               </div>
 
@@ -66,7 +69,7 @@ export const Contact = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="bg-background border-border focus:border-primary"
+                  className="glass-input text-foreground"
                 />
               </div>
 
@@ -80,13 +83,13 @@ export const Contact = () => {
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
-                  className="bg-background border-border focus:border-primary min-h-32"
+                  className="glass-input text-foreground min-h-32"
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground group"
+                className="w-full glass-button text-primary-foreground group"
                 size="lg"
               >
                 <Send className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />

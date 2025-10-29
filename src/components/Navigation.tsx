@@ -24,7 +24,7 @@ export const Navigation = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/80 backdrop-blur-lg border-b border-border" : "bg-transparent"
+        isScrolled ? "glass border-b border-border/50" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-4 py-4">
@@ -32,11 +32,12 @@ export const Navigation = () => {
           {/* Logo */}
           <a href="#" className="flex items-center space-x-2 group">
             <div className="relative">
-              <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center glow-border group-hover:scale-110 transition-transform">
+              <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center glow-border group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
                 <span className="text-xl font-bold text-primary glow-text">AI</span>
               </div>
+              <div className="absolute inset-0 bg-primary/10 rounded-lg blur-xl group-hover:scale-125 transition-transform"></div>
             </div>
-            <span className="text-xl font-bold">NeuroTech</span>
+            <span className="text-xl font-bold group-hover:text-primary transition-colors">NeuroTech</span>
           </a>
 
           {/* Desktop Navigation */}
@@ -45,12 +46,12 @@ export const Navigation = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+                className="text-muted-foreground hover:text-primary transition-all relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full hover:scale-105"
               >
                 {item.label}
               </a>
             ))}
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button className="glass-button text-primary-foreground">
               Связаться
             </Button>
           </div>
@@ -77,7 +78,7 @@ export const Navigation = () => {
                 {item.label}
               </a>
             ))}
-            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button className="w-full glass-button text-primary-foreground">
               Связаться
             </Button>
           </div>

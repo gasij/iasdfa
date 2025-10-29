@@ -59,15 +59,20 @@ export const Services = () => {
             return (
               <Card
                 key={index}
-                className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 p-6 animate-fade-in-up hover:scale-105"
+                className="group relative overflow-hidden glass-card p-6 animate-fade-in-up hover:scale-105"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Background gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                
+                {/* Shimmer effect on hover */}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                </div>
                 
                 <div className="relative z-10">
                   {/* Icon */}
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                     <Icon className="w-7 h-7 text-primary" strokeWidth={1.5} />
                   </div>
 
