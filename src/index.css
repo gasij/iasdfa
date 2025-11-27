@@ -8,44 +8,44 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 40% 2%;
-    --foreground: 210 40% 98%;
+    --background: 220 50% 2%;
+    --foreground: 210 40% 100%;
 
     --card: 220 30% 4%;
-    --card-foreground: 210 40% 98%;
+    --card-foreground: 210 40% 100%;
 
     --popover: 220 30% 4%;
-    --popover-foreground: 210 40% 98%;
+    --popover-foreground: 210 40% 100%;
 
     --primary: 217 91% 60%;
-    --primary-foreground: 210 40% 98%;
+    --primary-foreground: 210 40% 100%;
     --primary-glow: 217 91% 70%;
 
-    --secondary: 220 25% 8%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 217 30% 12%;
+    --secondary-foreground: 210 40% 100%;
 
-    --muted: 220 25% 10%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 217 25% 10%;
+    --muted-foreground: 210 30% 85%;
 
-    --accent: 217 91% 60%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 217 85% 55%;
+    --accent-foreground: 210 40% 100%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 210 40% 100%;
 
-    --border: 220 30% 12%;
-    --input: 220 30% 12%;
+    --border: 217 40% 20%;
+    --input: 217 30% 12%;
     --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(230 91% 70%));
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%));
     --gradient-glow: radial-gradient(circle at center, hsl(217 91% 60% / 0.3), transparent 70%);
     
     /* Shadows with glow */
     --shadow-glow: 0 0 40px hsl(217 91% 60% / 0.5), 0 0 80px hsl(217 91% 60% / 0.3);
-    --shadow-card: 0 4px 20px hsl(220 40% 1% / 0.5);
+    --shadow-card: 0 4px 20px hsl(217 40% 1% / 0.5);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -63,6 +63,20 @@ All colors MUST be HSL.
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    overflow-x: hidden;
+    background: black;
+    color: hsl(var(--foreground));
+  }
+  
+  /* Ensure all text is visible on dark background */
+  h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select, label {
+    color: hsl(var(--foreground));
+  }
+  
+  /* Make muted text more visible */
+  .text-muted-foreground {
+    color: hsl(var(--muted-foreground)) !important;
   }
   
   /* Better touch targets for mobile */
@@ -193,6 +207,112 @@ All colors MUST be HSL.
     }
   }
   
+  @keyframes slide-in-from-bottom {
+    from {
+      opacity: 0;
+      transform: translateY(100%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @keyframes slide-in-from-top {
+    from {
+      opacity: 0;
+      transform: translateY(-100%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  @keyframes slide-in-from-left {
+    from {
+      opacity: 0;
+      transform: translateX(-100%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+  
+  @keyframes slide-in-from-right {
+    from {
+      opacity: 0;
+      transform: translateX(100%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+  
+  @keyframes zoom-in-rotate {
+    from {
+      opacity: 0;
+      transform: scale(0.8) rotate(-5deg);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+  
+  @keyframes fade-in-blur {
+    from {
+      opacity: 0;
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+  
+  @keyframes modal-in {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  @keyframes modal-out {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+  }
+  
+  @keyframes overlay-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes overlay-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
   @keyframes border-glow {
     0%, 100% {
       border-color: hsl(var(--border));
@@ -237,6 +357,48 @@ All colors MUST be HSL.
   
   .animate-scale-in {
     animation: scale-in 0.4s ease-out;
+  }
+  
+  .animate-slide-in-from-bottom {
+    animation: slide-in-from-bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .animate-slide-in-from-top {
+    animation: slide-in-from-top 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .animate-slide-in-from-left {
+    animation: slide-in-from-left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .animate-slide-in-from-right {
+    animation: slide-in-from-right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .animate-zoom-in-rotate {
+    animation: zoom-in-rotate 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .animate-fade-in-blur {
+    animation: fade-in-blur 0.5s ease-out;
+  }
+  
+  .animate-modal-in {
+    animation: modal-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center center;
+  }
+  
+  .animate-modal-out {
+    animation: modal-out 0.25s cubic-bezier(0.4, 0, 1, 1);
+    transform-origin: center center;
+  }
+  
+  .animate-overlay-in {
+    animation: overlay-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .animate-overlay-out {
+    animation: overlay-out 0.2s cubic-bezier(0.4, 0, 1, 1);
   }
   
   .animate-border-glow {

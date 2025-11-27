@@ -1,4 +1,137 @@
 import { useEffect, useRef } from "react";
+import { createNoise3D } from "simplex-noise";
+
+interface Vertex {
+  x: number;
+  y: number;
+}
+
+class Branch {
+  vertices: Vertex[] = [];
+  x: number;
+  y: number;
+  moving: boolean = true;
+  direction: { x: number; y: number };
+  color: string;
+  hue: number;
+  saturation: number;
+  opacity: number;
+
+  constructor(
+    width: number,
+    height: number,
+    noise: (x: number, y: number, z: number) => number,
+    baseHue: number = 240,
+    saturation: number = 70,
+    opacity: number = 0.25,
+    randomFactor: number = 0.2
+  ) {
+    // Start from bottom center (exactly like original)
+    this.x = width / 2;
+    this.y = height;
+    // Pure blue color (no variation)
+    this.hue = baseHue;
+    this.saturation = saturation;
+    this.opacity = opacity;
+    this.vertices.push({ x: this.x, y: this.y });
+    this.direction = {
+      x: (Math.random() - 0.5) * 4, // random(-2, 2)
+      y: -(0.2 + Math.random() * 4.8), // random(-0.2, -5)
+    };
+    this.noise = noise;
+    this.randomFactor = randomFactor;
+  }
+
+  noise: (x: number, y: number, z: number) => number;
+  private randomFactor: number;
+
+  draw(ctx: CanvasRenderingContext2D, strokeWeight: number) {
+    if (this.vertices.length < 2) return;
+
+    // Convert HSB to RGB for canvas - ensure pure blue color
+    const h = this.hue % 360;
+    const s = this.saturation / 100;
+    const b = 0.8; // Reduced brightness for more saturated blue
+    const a = this.opacity;
+
+    // For pure blue (hue 240), use direct RGB values
+    if (h >= 240 && h < 300) {
+      // Pure blue range - use direct RGB
+      const blueValue = Math.round(255 * b * s + 255 * (1 - s) * 0.2);
+      const redValue = Math.round(255 * (1 - s) * 0.1);
+      const greenValue = Math.round(255 * (1 - s) * 0.3);
+      
+      ctx.strokeStyle = `rgba(${redValue}, ${greenValue}, ${blueValue}, ${a})`;
+    } else {
+      // Fallback to HSB conversion for other hues
+      const c = b * s;
+      const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+      const m = b - c;
+
+      let r = 0, g = 0, blue = 0;
+
+      if (h < 60) {
+        r = c; g = x; blue = 0;
+      } else if (h < 120) {
+        r = x; g = c; blue = 0;
+      } else if (h < 180) {
+        r = 0; g = c; blue = x;
+      } else if (h < 240) {
+        r = 0; g = x; blue = c;
+      } else if (h < 300) {
+        r = x; g = 0; blue = c;
+      } else {
+        r = c; g = 0; blue = x;
+      }
+
+      r = Math.round((r + m) * 255);
+      g = Math.round((g + m) * 255);
+      blue = Math.round((blue + m) * 255);
+
+      ctx.strokeStyle = `rgba(${r}, ${g}, ${blue}, ${a})`;
+    }
+    ctx.lineWidth = strokeWeight;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    ctx.beginPath();
+    ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
+    for (let i = 1; i < this.vertices.length; i++) {
+      ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+    }
+    ctx.stroke();
+  }
+
+  update(width: number, height: number, millis: number, ctx: CanvasRenderingContext2D, strokeWeight: number) {
+    if (this.moving) {
+      if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+        this.moving = false;
+      } else {
+        this.move(millis);
+      }
+    }
+    this.draw(ctx, strokeWeight);
+  }
+
+  private move(millis: number) {
+    // Exact match to original: p.simplex3(x, y, millis * 0.0001)
+    this.direction.x += this.noise(
+      this.x * 0.04 * this.randomFactor,
+      this.y * 0.04 * this.randomFactor,
+      millis * 0.0001
+    );
+    this.direction.y -= Math.abs(this.noise(
+      this.y * 0.01,
+      this.x * 0.01,
+      millis * 0.0001
+    )) * 0.2;
+
+    this.x += this.direction.x;
+    this.y += this.direction.y;
+
+    this.vertices.push({ x: this.x, y: this.y });
+  }
+}
 
 export const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -13,107 +146,71 @@ export const AnimatedBackground = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Detect mobile device
-    const isMobile = window.innerWidth < 768;
-    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+    // Parameters (matching the original code but with blue colors)
+    const baseHue = 240; // Pure blue
+    const saturation = 80; // Higher saturation for vibrant blue
+    const opacity = 0.15; // Reduced opacity for dimmer effect
+    const strokeWeight = 1;
+    const amount = 300;
+    const randomFactor = 0.2;
 
-    // Create particles
-    const particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      hue: number;
-    }> = [];
+    // Initialize branches
+    const branches: Branch[] = [];
+    let startTime = Date.now();
+    // Create noise with custom random function to ensure it works
+    let noise3D = createNoise3D(() => Math.random());
 
-    // Reduce particle count on mobile for better performance
-    const particleCount = isMobile ? 40 : isTablet ? 60 : 80;
-    const connectionDistance = isMobile ? 120 : 150;
+    const createBranches = () => {
+      branches.length = 0;
+      // Create new noise with random seed (like p.seed(Math.random()))
+      // In simplex-noise v4, we can pass a random function
+      noise3D = createNoise3D(() => Math.random());
+      const noise = (x: number, y: number, z: number) => {
+        return noise3D(x, y, z);
+      };
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 2 + 1,
-        hue: 217 + Math.random() * 30,
-      });
-    }
+      for (let i = 0; i < amount; i++) {
+        branches.push(
+          new Branch(
+            canvas.width,
+            canvas.height,
+            noise,
+            baseHue,
+            saturation,
+            opacity,
+            randomFactor
+          )
+        );
+      }
+    };
+
+    createBranches();
 
     let animationId: number;
-    let startTime = Date.now();
-    const cycleDuration = 120000; // 2 minutes in milliseconds (1 min drawing + 1 min erasing)
-    const drawingPhase = 60000; // 1 minute for drawing
-    const erasingPhase = 60000; // 1 minute for erasing
 
     const animate = () => {
       if (!ctx) return;
-      
-      const currentTime = Date.now();
-      const elapsed = (currentTime - startTime) % cycleDuration;
-      
-      // Determine which phase we're in
-      const isDrawingPhase = elapsed < drawingPhase;
-      const phaseProgress = isDrawingPhase 
-        ? elapsed / drawingPhase // 0 to 1 during drawing
-        : (elapsed - drawingPhase) / erasingPhase; // 0 to 1 during erasing
-      
-      if (isDrawingPhase) {
-        // Drawing phase: light fade to build up traces gradually
-        // Start with very light fade, gradually increase as pattern builds
-        const fadeIntensity = 0.015 + (phaseProgress * 0.025); // 0.015 to 0.04
-        ctx.fillStyle = `rgba(0, 0, 0, ${fadeIntensity})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      } else {
-        // Erasing phase: progressively stronger fade to completely erase traces
-        // Start strong to erase quickly, then maintain moderate fade
-        const eraseIntensity = 0.25 - (phaseProgress * 0.15); // 0.25 to 0.1
-        ctx.fillStyle = `rgba(0, 0, 0, ${eraseIntensity})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
 
-      // Update and draw particles
-      particles.forEach((particle, i) => {
-        particle.x += particle.vx;
-        particle.y += particle.vy;
+      const millis = Date.now() - startTime; // millis() equivalent
+      const noise = (x: number, y: number, z: number) => {
+        return noise3D(x, y, z);
+      };
 
-        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+      // Fade effect (like stroke(0, 0, 0, 20) in p5.js - black with low opacity for fade)
+      ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; // 20/255 ≈ 0.08
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Particles are hidden, only connections are visible
-        // (Commented out particle drawing to show only connections)
+      // Set blend mode to screen (additive blending)
+      ctx.globalCompositeOperation = "screen";
 
-        // Connect nearby particles - these are visible
-        particles.slice(i + 1).forEach((otherParticle) => {
-          const dx = particle.x - otherParticle.x;
-          const dy = particle.y - otherParticle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < connectionDistance) {
-            const opacity = 1 - distance / connectionDistance;
-            // Use colorful gradient for connections - reduced intensity
-            ctx.globalCompositeOperation = "lighter";
-            const gradient = ctx.createLinearGradient(
-              particle.x,
-              particle.y,
-              otherParticle.x,
-              otherParticle.y
-            );
-            gradient.addColorStop(0, `hsla(${particle.hue}, 70%, 60%, ${opacity * 0.08})`);
-            gradient.addColorStop(0.5, `hsla(${Math.floor((particle.hue + otherParticle.hue) / 2)}, 70%, 55%, ${opacity * 0.1})`);
-            gradient.addColorStop(1, `hsla(${otherParticle.hue}, 70%, 60%, ${opacity * 0.08})`);
-
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 0.15;
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.stroke();
-          }
-        });
+      // Update and draw branches (like original: branch.update() which calls draw internally)
+      branches.forEach((branch) => {
+        branch.noise = noise;
+        branch.update(canvas.width, canvas.height, millis, ctx, strokeWeight);
       });
+
+      // Reset composite operation
+      ctx.globalCompositeOperation = "source-over";
 
       animationId = requestAnimationFrame(animate);
     };
@@ -121,11 +218,7 @@ export const AnimatedBackground = () => {
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      // Reposition particles if needed when resizing
-      particles.forEach((particle) => {
-        if (particle.x > canvas.width) particle.x = canvas.width;
-        if (particle.y > canvas.height) particle.y = canvas.height;
-      });
+      createBranches();
     };
 
     window.addEventListener("resize", handleResize);
@@ -142,44 +235,7 @@ export const AnimatedBackground = () => {
       <canvas
         ref={canvasRef}
         className="fixed inset-0 w-full h-full z-0 pointer-events-none"
-        style={{ filter: "blur(0.5px)", opacity: 0.6 }}
       />
-      
-      {/* 3D Gradient Orb Effects - Hidden on mobile for performance */}
-      <div className="hidden md:block fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[20%] left-[10%] w-96 h-96 bg-primary/3 rounded-full blur-3xl animate-float" style={{ animationDuration: "15s" }}>
-          <div className="w-full h-full bg-gradient-to-br from-primary/10 to-transparent rounded-full animate-rotate" style={{ animationDuration: "20s" }}></div>
-        </div>
-        <div className="absolute bottom-[20%] right-[10%] w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDuration: "12s", animationDelay: "2s" }}>
-          <div className="w-full h-full bg-gradient-to-bl from-primary/8 to-transparent rounded-full animate-rotate" style={{ animationDuration: "25s", animationDirection: "reverse" }}></div>
-        </div>
-        <div className="absolute top-[50%] left-[50%] w-64 h-64 bg-primary/3 rounded-full blur-2xl animate-float" style={{ animationDuration: "18s", animationDelay: "4s" }}>
-          <div className="w-full h-full bg-gradient-to-tr from-primary/5 to-transparent rounded-full animate-rotate" style={{ animationDuration: "30s" }}></div>
-        </div>
-        <div className="absolute bottom-[30%] left-[20%] w-72 h-72 bg-primary/4 rounded-full blur-3xl animate-float" style={{ animationDuration: "14s", animationDelay: "6s" }}>
-          <div className="w-full h-full bg-gradient-to-tl from-primary/6 to-transparent rounded-full animate-rotate" style={{ animationDuration: "22s", animationDirection: "reverse" }}></div>
-        </div>
-      </div>
-
-      {/* Grid pattern overlay - Hidden on mobile */}
-      <div className="hidden md:block fixed inset-0 pointer-events-none z-0 opacity-5">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(55, 125, 255, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(55, 125, 255, 0.03) 1px, transparent 1px)
-            `,
-            backgroundSize: "50px 50px",
-            animation: "gradient 60s ease infinite"
-          }}
-        />
-      </div>
-
-      {/* Scanning line effect - Hidden on mobile */}
-      <div className="hidden md:block fixed inset-0 pointer-events-none z-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/10 to-transparent animate-gradient" style={{ height: "200%", animation: "gradient-shift 4s linear infinite" }}></div>
-      </div>
     </>
   );
 };
