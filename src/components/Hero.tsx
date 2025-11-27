@@ -52,11 +52,9 @@ export const Hero = () => {
 
           {/* Main Heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight animate-scale-in px-2 sm:px-4">
-            Искусственный интеллект,
+            Делаем <span className="text-primary glow-text">искусственный интеллект</span>
             <br className="hidden sm:block" />
-            <span className="text-primary glow-text">который работает</span>
-            <br />
-            на ваш бизнес
+            частью вашей команды
           </h1>
 
           {/* Subheading */}

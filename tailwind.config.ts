@@ -184,6 +184,57 @@ export default {
             transform: "translateY(-10px)"
           }
         },
+        "modal-in": {
+          "0%": {
+            opacity: "0",
+            transform: "translate(-50%, -50%) scale(0.7) rotate(-5deg)",
+            filter: "blur(8px)"
+          },
+          "50%": {
+            opacity: "0.8",
+            transform: "translate(-50%, -50%) scale(1.05) rotate(1deg)",
+            filter: "blur(2px)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translate(-50%, -50%) scale(1) rotate(0deg)",
+            filter: "blur(0)"
+          }
+        },
+        "modal-out": {
+          "0%": {
+            opacity: "1",
+            transform: "translate(-50%, -50%) scale(1) rotate(0deg)",
+            filter: "blur(0)",
+            boxShadow: "0 0 60px rgba(59, 130, 246, 0.2), 0 0 100px rgba(59, 130, 246, 0.1)"
+          },
+          "100%": {
+            opacity: "0",
+            transform: "translate(-50%, -50%) scale(0.8) rotate(5deg)",
+            filter: "blur(8px)",
+            boxShadow: "0 0 0 rgba(59, 130, 246, 0)"
+          }
+        },
+        "overlay-in": {
+          "0%": {
+            opacity: "0",
+            backdropFilter: "blur(0px)"
+          },
+          "100%": {
+            opacity: "1",
+            backdropFilter: "blur(8px)"
+          }
+        },
+        "overlay-out": {
+          "0%": {
+            opacity: "1",
+            backdropFilter: "blur(8px)"
+          },
+          "100%": {
+            opacity: "0",
+            backdropFilter: "blur(0px)"
+          }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -199,6 +250,10 @@ export default {
         "scale-in": "scale-in 0.4s ease-out",
         "border-glow": "border-glow 3s ease-in-out infinite",
         "float": "float 3s ease-in-out infinite",
+        "modal-in": "modal-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "modal-out": "modal-out 0.3s cubic-bezier(0.4, 0, 1, 1)",
+        "overlay-in": "overlay-in 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+        "overlay-out": "overlay-out 0.25s cubic-bezier(0.4, 0, 1, 1)",
       },
     },
   },

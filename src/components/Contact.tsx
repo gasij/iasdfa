@@ -1,26 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Mail, Send, MessageCircle } from "lucide-react";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { Mail, MessageCircle, Phone } from "lucide-react";
+import { AIChat } from "./AIChat";
 
 export const Contact = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Сообщение отправлено!",
-      description: "Мы свяжемся с вами в ближайшее время.",
-    });
-    setFormData({ name: "", email: "", message: "" });
-  };
 
   return (
     <section id="contact" className="py-12 sm:py-16 md:py-24 relative overflow-hidden">
@@ -37,131 +18,71 @@ export const Contact = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-6xl mx-auto">
-          {/* Contact Form */}
-          <div className="glass-card rounded-2xl p-6 sm:p-8 animate-fade-in-up relative overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch max-w-6xl mx-auto">
+          {/* AI Chat */}
+          <div className="animate-fade-in-up flex h-full">
+            <AIChat />
+          </div>
+
+          {/* Contact Info */}
+          <div className="glass-card rounded-2xl p-6 sm:p-8 animate-fade-in-up relative overflow-hidden flex flex-col h-full min-h-[500px] sm:min-h-[600px]">
             {/* Background decoration */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-shimmer"></div>
             
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 relative z-10">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
-                  Имя
-                </label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Ваше имя"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="glass-input text-foreground"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="glass-input text-foreground"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  Сообщение
-                </label>
-                <Textarea
-                  id="message"
-                  placeholder="Расскажите о вашем проекте..."
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  className="glass-input text-foreground min-h-32"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full glass-button text-primary-foreground group"
-                size="lg"
-              >
-                <Send className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
-                Отправить сообщение
-              </Button>
-            </form>
-
-            <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+            <div className="relative z-10 flex flex-col h-full">
+              <h3 className="text-xl sm:text-2xl font-bold mb-6 text-center">
+                Наши <span className="text-primary glow-text">контакты</span>
+              </h3>
+              
+              <div className="space-y-4 flex-1 flex flex-col justify-center">
                 <a
-                  href="mailto:info@neurotech.ai"
-                  className="flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                  href="mailto:aipraxispartners@gmail.com"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-card/50 border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group"
                 >
-                  <Mail className="w-5 h-5" />
-                  info@neurotech.ai
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <Mail className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-muted-foreground">Email</p>
+                    <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                      aipraxispartners@gmail.com
+                    </p>
+                  </div>
                 </a>
+
                 <a
-                  href="#"
-                  className="flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                  href="https://t.me/AiPPinfobot"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-card/50 border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group"
                 >
-                  <MessageCircle className="w-5 h-5" />
-                  Telegram
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <MessageCircle className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-muted-foreground">Telegram</p>
+                    <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                      @AiPPinfobot
+                    </p>
+                  </div>
+                </a>
+
+                <a
+                  href="tel:+79207803300"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-card/50 border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <Phone className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-muted-foreground">Телефон</p>
+                    <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                      +7 (920) 780 33 00
+                    </p>
+                  </div>
                 </a>
               </div>
             </div>
-          </div>
-
-          {/* Sketchfab 3D Model - Hidden on mobile for performance */}
-          <div className="hidden lg:block rounded-2xl overflow-hidden relative animate-fade-in-up glass-card">
-            <div className="sketchfab-embed-wrapper" style={{ position: 'relative', height: '500px', overflow: 'hidden', borderRadius: '1rem' }}>
-              <iframe
-                title="AI CPU Concept with Circuit Board"
-                frameBorder="0"
-                allowFullScreen
-                allow="autoplay; fullscreen; xr-spatial-tracking"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none'
-                }}
-                src="https://sketchfab.com/models/5945062ef52348438dc04a7bd231f6e1/embed"
-              />
-            </div>
-            <p className="p-2 text-xs text-muted-foreground text-center">
-              <a
-                href="https://sketchfab.com/3d-models/ai-cpu-concept-with-circuit-board-5945062ef52348438dc04a7bd231f6e1?utm_medium=embed&utm_campaign=share-popup&utm_content=5945062ef52348438dc04a7bd231f6e1"
-                target="_blank"
-                rel="nofollow"
-                className="font-bold text-primary hover:underline"
-              >
-                AI CPU Concept with Circuit Board
-              </a>
-              {' by '}
-              <a
-                href="https://sketchfab.com/bengroup?utm_medium=embed&utm_campaign=share-popup&utm_content=5945062ef52348438dc04a7bd231f6e1"
-                target="_blank"
-                rel="nofollow"
-                className="font-bold text-primary hover:underline"
-              >
-                BEN GROUP STUDIO
-              </a>
-              {' on '}
-              <a
-                href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=5945062ef52348438dc04a7bd231f6e1"
-                target="_blank"
-                rel="nofollow"
-                className="font-bold text-primary hover:underline"
-              >
-                Sketchfab
-              </a>
-            </p>
           </div>
         </div>
       </div>
